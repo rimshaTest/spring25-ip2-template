@@ -6,10 +6,10 @@ const GAMES_API_URL = `${process.env.REACT_APP_SERVER_URL}/games`;
 /**
  * Function to create a new game of the specified type.
  * @param gameType The type of game to create.
- * @returns A promise resolving to the created game instance.
+ * @returns A promise resolving to the created game instance id.
  * @throws Error if there is an issue while creating the game.
  */
-const createGame = async (gameType: GameType): Promise<GameInstance> => {
+const createGame = async (gameType: GameType): Promise<string> => {
   const res = await api.post(`${GAMES_API_URL}/create`, {
     gameType,
   });

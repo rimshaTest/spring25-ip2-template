@@ -17,17 +17,35 @@ const useNimGamePage = (gameState: GameInstance) => {
   const { user, socket } = useUserContext();
 
   // TODO: Task 2 - Define the state variable to store the current move (`move`)
+    const [move, setMove] = useState<number>(1);
+
 
   const handleMakeMove = async () => {
     // TODO: Task 2 - Emit a socket event to make a move in the Nim game
+
+    if (socket && user && user._id && gameState) {
+      socket.emit('makeMove', {
+        gameID: gameState.gameID,
+        move: { 
+          playerID: user._id,
+          gameID: gameState.gameID,
+          move: {
+            numObjects: move
+          },
+        }
+      });
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // TODO: Task 2 - Update the move state based on the user input.
     // The move should be a number between 1 and 3, and apply this validation before
     // updating the state.
-
     const { value } = e.target;
+    const num = parseInt(value, 10);
+    if (!isNaN(num) && num >= 1 && num <= 3) {
+      setMove(num);
+    }
   };
 
   return {

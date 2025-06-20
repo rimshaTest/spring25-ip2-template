@@ -36,17 +36,51 @@ const NimGamePage = ({ gameState }: { gameState: GameInstance }) => {
           - Remaining Objects: The number of objects remaining in the pile.
           - Winner: The winner of the game, or "No winner" if the winner is not defined. (Conditionally rendered)
         */}
+        <p>
+          <strong>Player 1:</strong> {gameState.state.player1 || "Waiting..."}
+        </p>
+        <p>
+          <strong>Player 2:</strong> {gameState.state.player2 || "Waiting..."}
+        </p>
+        <p>
+          <strong>Current Player to Move:</strong> {user.username || "Waiting..."}
+        </p>
+        <p>
+          <strong>Remaining Objects:</strong> {gameState.state.remainingObjects}
+        </p>
+        <p>
+          <strong>Winner:</strong> {gameState.state.winners || "No winner"}
+        </p>
         {/* TODO: Task 2 - Conditionally render game move input for an in progress game */}
-        {
+        {!gameState.state.winners && (
           <div className='nim-game-move'>
             <h3>Make Your Move</h3>
             {/* TODO: Task 2 - Implement the input field which takes a number input.
             Use the class name 'input-move' for styling. */}
+            <input
+              type="number"
+              min={1}
+              max={3}
+              className="input-move"
+              value={move}
+              onChange={handleInputChange}
+            />
             {/* TODO: Task 2 - Implement the submit button which submits the entered move.
             The button should be disabled if it is not the user's turn.
             Use the class name 'btn-submit' for styling. */}
+            <button
+              className="btn-submit"
+              onClick={handleMakeMove}
+              disabled={
+                !user ||
+                gameState.state.status !== 'IN_PROGRESS' ||
+                user.username !== (gameState.state.moves.length % 2 === 0 ? gameState.state.player1 : gameState.state.player2)
+              }
+            >
+              Submit Move
+            </button>
           </div>
-        }
+        )}
       </div>
     </>
   );
