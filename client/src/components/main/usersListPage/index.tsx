@@ -40,8 +40,15 @@ const UsersListPage = (props: UserListPageProps) => {
     <div className='user-card-container'>
       <UsersListHeader userCount={userList.length} setUserFilter={setUserFilter} />
       <div id='users_list' className='users_list'>
-        {/* TODO: Task 1 - Use a map to display each user using the `UserCardView`
-        component. Make sure that the key used is _unique_. */}
+      {/* TODO: Task 1 - Use a map to display each user using the `UserCardView`
+      component. Make sure that the key used is _unique_. */}
+      {userList.map((user) => (
+        <UserCardView
+          key={user.id || user.username}
+          user={user}
+          onClick={() => handleUserCardViewClickHandler(user)}
+        />
+      ))}
       </div>
       {(!userList.length || userList.length === 0) && (
         <div className='bold_title right_padding'>No Users Found</div>
