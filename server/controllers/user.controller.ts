@@ -128,7 +128,6 @@ const userController = (socket: FakeSOSocket) => {
   const getUsers = async (_: Request, res: Response): Promise<void> => {
     // TODO: Task 1 - Implement the getUsers endpoint
     try {
-
       const users = await getUsersList();
 
       if ('error' in users) {

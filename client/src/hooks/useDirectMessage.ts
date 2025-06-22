@@ -18,6 +18,7 @@ const useDirectMessage = () => {
 
   const handleJoinChat = (chatID: string) => {
     // TODO: Task 3 - Emit a 'joinChat' event to the socket with the chat ID function argument.
+    socket.emit('joinChat', chatID);
   };
 
   const handleSendMessage = async () => {
@@ -25,6 +26,38 @@ const useDirectMessage = () => {
     // Whitespace-only messages should not be sent, and the current chat to send this message to
     // should be defined. Use the appropriate service function to make an API call, and update the
     // states accordingly.
+    if (
+      !newMessage.trim() ||
+      !selectedChat ||
+      !selectedChat._id ||
+      !user._id
+    )
+      return;
+    try {
+      const messagePayload = {
+        chat: selectedChat._id as string,
+        msgFrom: user._id as string,
+        msg: newMessage.trim(),
+        msgDateTime: new Date(),
+      };
+      const message: Message = await sendMessage(messagePayload, selectedChat._id);
+      setSelectedChat({
+        ...selectedChat,
+        messages: [
+          ...selectedChat.messages,
+          {
+            ...message,
+            user: {
+              _id: user._id,
+              username: user.username,
+            },
+          },
+        ],
+      });
+      setNewMessage('');
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    }
   };
 
   const handleChatSelect = async (chatID: string | undefined) => {

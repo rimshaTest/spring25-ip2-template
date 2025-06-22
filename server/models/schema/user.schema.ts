@@ -26,8 +26,8 @@ const userSchema: Schema = new Schema(
     // This is an optional field, which should have a default value of empty
     biography: {
       type: String,
-      default: ""
-    }
+      default: '',
+    },
   },
   { collection: 'User' },
 );

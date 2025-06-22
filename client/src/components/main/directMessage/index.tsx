@@ -39,11 +39,35 @@ const DirectMessage = () => {
         - The UsersListPage component to display a list of users to select from and handle search 
           and selection functionality (component reuse!).
         */}
+        {showCreatePanel && (
+          <>
+            <p>
+              {chatToCreate
+                ? `Selected user: ${chatToCreate}`
+                : 'No user selected'}
+            </p>
+            <button
+              className='custom-button'
+              onClick={handleCreateChat}
+              disabled={!chatToCreate}
+            >
+              Create Chat
+            </button>
+            <UsersListPage handleUserSelect={handleUserSelect} />
+          </>
+        )}
       </div>
       <div className='direct-message-container'>
         <div className='chats-list'>
           {/* Use a map to display each of the chats using the ChatsListCard component. 
           Make sure that each component has a _unique_ key. */}
+          {chats.map(chat => (
+            <ChatsListCard
+              key={chat._id}
+              chat={chat}
+              handleChatSelect={handleChatSelect}
+            />
+          ))}
         </div>
         <div className='chat-container'>
           {selectedChat ? (
@@ -53,10 +77,23 @@ const DirectMessage = () => {
                 {/* Use a map to display each of the messages in the selected chat. 
                 There is a component you can reuse to display this (hint: check the global chat)! 
                 Make sure that each component has a _unique_ key. */}
+                {selectedChat.messages.map(message => (
+                  <MessageCard key={message._id} message={message} />
+                ))}
               </div>
               <div className='message-input'>
                 {/* TODO: Task 3 - Create an input field to take in the message the user wants to
                 send. Use the class name 'custom-input' for styling. */}
+                <input
+                  type="text"
+                  className="custom-input"
+                  placeholder="Type your message..."
+                  value={newMessage}
+                  onChange={e => setNewMessage(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') handleSendMessage();
+                  }}
+                />
                 <button className='custom-button' onClick={handleSendMessage}>
                   Send
                 </button>

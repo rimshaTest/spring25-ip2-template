@@ -44,9 +44,9 @@ const UsersListPage = (props: UserListPageProps) => {
       component. Make sure that the key used is _unique_. */}
       {userList.map((user) => (
         <UserCardView
-          key={user.id || user.username}
+          key={user._id || user.username}
           user={user}
-          onClick={() => handleUserCardViewClickHandler(user)}
+          handleUserCardViewClickHandler={() => handleUserCardViewClickHandler(user)}
         />
       ))}
       </div>
