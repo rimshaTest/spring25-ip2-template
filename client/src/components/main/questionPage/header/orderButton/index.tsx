@@ -26,8 +26,7 @@ const OrderButton = ({ orderType, setQuestionOrder }: OrderButtonProps) => (
     className='btn'
     onClick={() => {
       setQuestionOrder(orderType);
-    }}
-  >
+    }}>
     {orderTypeDisplayName[orderType]}
   </button>
 );

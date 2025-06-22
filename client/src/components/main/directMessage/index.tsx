@@ -29,8 +29,7 @@ const DirectMessage = () => {
       <div className='create-panel'>
         <button
           className='custom-button'
-          onClick={() => setShowCreatePanel(prevState => !prevState)}
-        >
+          onClick={() => setShowCreatePanel(prevState => !prevState)}>
           {showCreatePanel ? 'Hide Create Chat Panel' : 'Start a Chat'}
         </button>
         {/* TODO: Task 3 - If the create panel should be displayed, display 

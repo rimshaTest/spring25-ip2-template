@@ -54,8 +54,7 @@ const NewQuestionPage = () => {
           className='form_postBtn'
           onClick={() => {
             postQuestion();
-          }}
-        >
+          }}>
           Post Question
         </button>
         <div className='mandatory_indicator'>* indicates mandatory fields</div>

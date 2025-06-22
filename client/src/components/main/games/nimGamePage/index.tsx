@@ -78,8 +78,7 @@ const NimGamePage = ({ gameState }: { gameState: GameInstance }) => {
                   (gameState.state.moves.length % 2 === 0
                     ? gameState.state.player1
                     : gameState.state.player2)
-              }
-            >
+              }>
               Submit Move
             </button>
           </div>

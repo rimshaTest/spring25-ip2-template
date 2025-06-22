@@ -63,7 +63,7 @@ const useUsersListPage = () => {
     const handleModifiedUserUpdate = (userUpdate: UserUpdatePayload) => {
       // TODO: Task 1 - Update the user list based on the user update type.
       if (userUpdate.type === 'deleted') {
-        setUserList(prevUserList => prevUserList.filter(u => u._id !== userUpdate.user._id));
+        setUserList(prevUserList => removeUserFromList(prevUserList, userUpdate.user));
       } else {
         setUserList(prevUserList => addUserToList(prevUserList, userUpdate.user));
       }

@@ -38,8 +38,7 @@ const AllGamesPage = () => {
                 onClick={
                   /* TODO: Task 2 - Implement the handler function for the button to create a new game of Nim */
                   () => handleSelectGameType('Nim')
-                }
-              >
+                }>
                 Nim
               </button>
               <button onClick={handleToggleModal}>Cancel</button>

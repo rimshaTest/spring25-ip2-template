@@ -21,22 +21,14 @@ const useAllGamesPage = () => {
 
   const fetchGames = async () => {
     // TODO: Task 2 - Fetch and update the list of available games state
-    try {
-      const games = await getGames(undefined, undefined);
-      setAvailableGames(games);
-    } catch (error) {
-      console.error('Failed to fetch games', error);
-    }
+    const games = await getGames(undefined, undefined);
+    setAvailableGames(games);
   };
 
   const handleCreateGame = async (gameType: GameType) => {
     // TODO: Task 2 - Create a new game with the provided type
-    try {
-      await createGame(gameType);
-      fetchGames(); // Refresh the list after creating a game
-    } catch (error) {
-      console.error('Failed to create game:', error);
-    }
+    await createGame(gameType);
+    fetchGames(); // Refresh the list after creating a game
   };
 
   const handleJoin = (gameID: string) => {
@@ -53,7 +45,7 @@ const useAllGamesPage = () => {
     setIsModalOpen(prev => !prev);
   };
 
-  const handleSelectGameType = async(gameType: GameType) => {
+  const handleSelectGameType = async (gameType: GameType) => {
     // TODO: Task 2 - Create a new game with the selected game type and toggle the modal
     await handleCreateGame(gameType);
     handleToggleModal();

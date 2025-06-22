@@ -21,8 +21,7 @@ const AskQuestionButton = () => {
       className='bluebtn'
       onClick={() => {
         handleNewQuestion();
-      }}
-    >
+      }}>
       Ask a Question
     </button>
   );

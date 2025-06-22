@@ -86,7 +86,7 @@ const useProfileSettings = () => {
       setErrorMessage('Please fill in both password fields.');
       return;
     }
-    if (newPassword !== confirmNewPassword) {
+    if (validatePasswords()) {
       setErrorMessage('Passwords do not match.');
       return;
     }

@@ -95,7 +95,7 @@ const useGamePage = () => {
         socket.off('gameError', handleGameError);
       }
     };
-  }, [gameID, socket, user.username]);
+  }, [gameID, socket, user.username, user._id]);
 
   return {
     gameState,
