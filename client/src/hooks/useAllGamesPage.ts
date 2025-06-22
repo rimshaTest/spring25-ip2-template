@@ -25,19 +25,19 @@ const useAllGamesPage = () => {
       const games = await getGames(undefined, undefined);
       setAvailableGames(games);
     } catch (error) {
-      console.error('Failed to fetch games:', error);
+      console.error('Failed to fetch games', error);
     }
   };
 
   const handleCreateGame = async (gameType: GameType) => {
     // TODO: Task 2 - Create a new game with the provided type
-      try {
+    try {
       await createGame(gameType);
       fetchGames(); // Refresh the list after creating a game
     } catch (error) {
       console.error('Failed to create game:', error);
     }
-  }
+  };
 
   const handleJoin = (gameID: string) => {
     navigate(`/games/${gameID}`);
@@ -50,7 +50,7 @@ const useAllGamesPage = () => {
 
   const handleToggleModal = () => {
     // TODO: Task 2 - Toggle the visibility of the game creation modal
-    setIsModalOpen((prev) => !prev);
+    setIsModalOpen(prev => !prev);
   };
 
   const handleSelectGameType = async(gameType: GameType) => {

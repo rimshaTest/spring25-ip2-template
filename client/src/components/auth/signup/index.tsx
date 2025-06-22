@@ -30,11 +30,11 @@ const Signup = () => {
         is entered. Use the 'input-text' class for styling.
         */}
         <input
-          type="text"
-          name="username"
+          type='text'
+          name='username'
           value={username}
           onChange={e => handleInputChange(e, 'username')}
-          className="input-text"
+          className='input-text'
         />
         <h4>Please enter your password.</h4>
         {/* TODO: Task 1 - Add an input field for the password input.
@@ -43,11 +43,11 @@ const Signup = () => {
         Use the 'input-text' class for styling.
         */}
         <input
-          type={showPassword ? "text" : "password"}
-          name="password"
+          type={showPassword ? 'text' : 'password'}
+          name='password'
           value={password}
           onChange={e => handleInputChange(e, 'password')}
-          className="input-text"
+          className='input-text'
         />
         {/* TODO: Task 1 - Add an input field for the password confirmation input.
         The input field should correctly update the value when text
@@ -56,11 +56,11 @@ const Signup = () => {
         */}
         <h4>Please confirm your password.</h4>
         <input
-          type={showPassword ? "text" : "password"}
-          name="passwordConfirmation"
+          type={showPassword ? 'text' : 'password'}
+          name='passwordConfirmation'
           value={passwordConfirmation}
           onChange={e => handleInputChange(e, 'confirmPassword')}
-          className="input-text"
+          className='input-text'
         />
         <div className='show-password'>
           {/* TODO: Task 1 - Add a checkbox input field for the visibility toggle.
@@ -68,8 +68,8 @@ const Signup = () => {
         Use the id 'showPasswordToggle'. No styling class is required here.
         */}
           <input
-            type="checkbox"
-            id="showPasswordToggle"
+            type='checkbox'
+            id='showPasswordToggle'
             checked={showPassword}
             onChange={togglePasswordVisibility}
           />

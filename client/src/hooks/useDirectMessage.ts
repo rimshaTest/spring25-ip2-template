@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Chat, ChatUpdatePayload, Message, User } from '../types';
 import useUserContext from './useUserContext';
-import { createChat, getChatById, getChatsByUser, sendMessage } from '../services/chatService';
+import {
+  // createChat, getChatById, getChatsByUser,
+  sendMessage,
+} from '../services/chatService';
 
 /**
  * useDirectMessage is a custom hook that provides state and functions for direct messaging between users.
@@ -26,13 +29,7 @@ const useDirectMessage = () => {
     // Whitespace-only messages should not be sent, and the current chat to send this message to
     // should be defined. Use the appropriate service function to make an API call, and update the
     // states accordingly.
-    if (
-      !newMessage.trim() ||
-      !selectedChat ||
-      !selectedChat._id ||
-      !user._id
-    )
-      return;
+    if (!newMessage.trim() || !selectedChat || !selectedChat._id || !user._id) return;
     try {
       const messagePayload = {
         chat: selectedChat._id as string,

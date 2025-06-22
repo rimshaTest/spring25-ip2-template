@@ -33,7 +33,7 @@ const useAuth = (authType: 'login' | 'signup') => {
    * Toggles the visibility of the password input field.
    */
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+    setShowPassword(prev => !prev);
   };
 
   /**
@@ -46,7 +46,7 @@ const useAuth = (authType: 'login' | 'signup') => {
     e: ChangeEvent<HTMLInputElement>,
     field: 'username' | 'password' | 'confirmPassword',
   ) => {
-    const value = e.target.value;
+    const { value } = e.target;
     if (field === 'username') {
       setUsername(value);
     } else if (field === 'password') {
@@ -108,18 +108,18 @@ const useAuth = (authType: 'login' | 'signup') => {
     try {
       // TODO - Task 1: Handle the form submission, calling appropriate API routes
       // based on the auth type
-        if (authType === 'login') {
-          user = await loginUser({ username, password });
-        } else {
-          user = await createUser({ username, password });
-        }
+      if (authType === 'login') {
+        user = await loginUser({ username, password });
+      } else {
+        user = await createUser({ username, password });
+      }
 
-        // Redirect to home page on successful login/signup
-        setUser(user);
-        navigate('/home');
+      // Redirect to home page on successful login/signup
+      setUser(user);
+      navigate('/home');
     } catch (error) {
       // TODO - Task 1: Display error message
-        console.log(`${authType === 'login' ? 'Login' : 'Signup'} failed. Please try again.`);
+      setErr(`${authType === 'login' ? 'Login' : 'Signup'} failed. Please try again.`);
     }
   };
 

@@ -63,15 +63,14 @@ const useProfileSettings = () => {
    */
   const togglePasswordVisibility = () => {
     // TODO: Task 1 - Toggle the password visibility.
-    setShowPassword((prev) => !prev);
+    setShowPassword(prev => !prev);
   };
 
   /**
    * Validate the password fields before attempting to reset.
    */
-  const validatePasswords = () => {
-    return newPassword && confirmNewPassword && newPassword === confirmNewPassword;
-  };
+  const validatePasswords = () =>
+    newPassword && confirmNewPassword && newPassword === confirmNewPassword;
 
   /**
    * Handler for resetting the password

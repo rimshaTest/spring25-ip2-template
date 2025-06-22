@@ -28,13 +28,13 @@ const useGamePage = () => {
     // TODO: Task 2 - Implement the logic to leave the current game.
     // - If a game is joined and not over, make the appropriate API call to leave the game, and
     // emit a 'leaveGame' event to the server using the socket.
-    if (joinedGameID && gameState && !(gameState.state.status=='OVER')) {
+    if (joinedGameID && gameState && !(gameState.state.status === 'OVER')) {
       try {
         await leaveGame(joinedGameID, user._id ?? '');
         if (socket) {
           socket.emit('leaveGame', joinedGameID);
         }
-      } catch (err: any) {
+      } catch (err) {
         setError('Failed to leave the game.');
       }
     }
@@ -59,7 +59,7 @@ const useGamePage = () => {
         if (socket) {
           socket.emit('joinGame', id);
         }
-      } catch (err: any) {
+      } catch (err) {
         setError('Failed to join the game.');
         setGameState(null);
         setJoinedGameID(null);
@@ -73,7 +73,6 @@ const useGamePage = () => {
     const handleGameUpdate = (updatedState: GameUpdatePayload) => {
       // TODO: Task 2 - Update the game state based on the received update
       setGameState(updatedState.gameState);
-      
     };
 
     const handleGameError = (gameError: GameErrorPayload) => {

@@ -42,7 +42,7 @@ const GamePage = () => {
       <div className='game-controls'>
         {/* TODO: Task 2 - Add a button that leaves the game on click.
         Use the class name 'btn-leave-game' for styling. */}
-        <button className="btn-leave-game" onClick={handleLeaveGame}>
+        <button className='btn-leave-game' onClick={handleLeaveGame}>
           Leave Game
         </button>
       </div>
@@ -52,7 +52,7 @@ const GamePage = () => {
 
       {/* Conditionally render an error message if an error occurs.
       Use a <div> element with the class name 'game-error' for styling. */}
-      {error && <div className="game-error">{error}</div>}
+      {error && <div className='game-error'>{error}</div>}
     </div>
   );
 };

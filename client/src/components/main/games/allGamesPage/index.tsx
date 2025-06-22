@@ -31,20 +31,22 @@ const AllGamesPage = () => {
       {
         /* TODO: Task 2 - Conditionally render the modal based on the state variable */
         isModalOpen && (
-        <div className='game-modal'>
-          <div className='modal-content'>
-            <h2>Select Game Type</h2>
-            <button
-              onClick={
-                /* TODO: Task 2 - Implement the handler function for the button to create a new game of Nim */ 
-                () => handleSelectGameType('Nim')
-              }>
-              Nim
-            </button>
-            <button onClick={handleToggleModal}>Cancel</button>
+          <div className='game-modal'>
+            <div className='modal-content'>
+              <h2>Select Game Type</h2>
+              <button
+                onClick={
+                  /* TODO: Task 2 - Implement the handler function for the button to create a new game of Nim */
+                  () => handleSelectGameType('Nim')
+                }
+              >
+                Nim
+              </button>
+              <button onClick={handleToggleModal}>Cancel</button>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       <div className='game-available'>
         <div className='game-list'>
@@ -55,15 +57,17 @@ const AllGamesPage = () => {
             Refresh List
           </button>
           <div className='game-items'>
-            {/* TODO: Task 2 - Map over the list of available games and render a `GameCard` component for each game. 
+            {
+              /* TODO: Task 2 - Map over the list of available games and render a `GameCard` component for each game. 
             Make sure the key for each component is _unique_. */
-            availableGames.map((game) => (
-              <GameCard
-                key={game.gameID}
-                game={game}
-                handleJoin={() => handleJoin(game.gameID)}
-              />
-            ))}
+              availableGames.map(game => (
+                <GameCard
+                  key={game.gameID}
+                  game={game}
+                  handleJoin={() => handleJoin(game.gameID)}
+                />
+              ))
+            }
           </div>
         </div>
       </div>

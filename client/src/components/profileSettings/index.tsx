@@ -60,13 +60,12 @@ const ProfileSettings: React.FC = () => {
                   <button
                     className='login-button'
                     style={{ marginLeft: '1rem' }}
-                    onClick={
+                    onClick={() => {
                       /* TODO: Task 1 - Complete the click handler function to enter the editing mode and 
-                      initialize the editing field with the current user profile biography. */ () => {
-                        setEditBioMode(true);
-                        setNewBio(userData.biography || '');
-                      }
-                    }>
+                      initialize the editing field with the current user profile biography. */
+                      setEditBioMode(true);
+                      setNewBio(userData.biography || '');
+                    }}>
                     Edit
                   </button>
                 )}
@@ -141,20 +140,20 @@ const ProfileSettings: React.FC = () => {
                   Reset
                 </button>
               </>
-        )}
+            )}
 
             {/* ---- Danger Zone (Delete User) ---- */}
             {
               /* TODO: Task 1 - Conditionally render the component such that it's only displayed 
               if the current user has the appropriate permissions to edit the profile. */
               canEditProfile && (
-              <>
-                <h4>Danger Zone</h4>
-                <button className='delete-button' onClick={handleDeleteUser}>
-                  Delete This User
-                </button>
-              </>
-            )
+                <>
+                  <h4>Danger Zone</h4>
+                  <button className='delete-button' onClick={handleDeleteUser}>
+                    Delete This User
+                  </button>
+                </>
+              )
             }
           </>
         ) : (
