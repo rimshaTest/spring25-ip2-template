@@ -78,6 +78,36 @@ describe('Chat service', () => {
       expect(result.participants[0]?.toString()).toEqual(expect.any(String));
       expect(result.messages[0]?.toString()).toEqual(expect.any(String));
     });
+
+    it('should successfully save a chat with no messages', async () => {
+      const mockChatPayload: CreateChatPayload = {
+        participants: ['testUser'],
+        messages: [],
+      };
+
+      mockingoose(ChatModel).toReturn(
+        {
+          _id: new mongoose.Types.ObjectId(),
+          participants: ['testUser'],
+          messages: [],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        'create',
+      );
+
+      const result = await saveChat(mockChatPayload);
+
+      if ('error' in result) {
+        return;
+      }
+
+      expect(result).toHaveProperty('_id');
+      expect(Array.isArray(result.participants)).toBe(true);
+      expect(Array.isArray(result.messages)).toBe(true);
+      expect(result.participants[0]?.toString()).toEqual(expect.any(String));
+      expect(result.messages[0]?.toString()).toEqual(expect.any(String));
+    });
   });
 
   // ----------------------------------------------------------------------------
@@ -115,6 +145,16 @@ describe('Chat service', () => {
         type: 'direct',
       });
     });
+
+    it('should return an error if user does not exist', async () => {
+      mockingoose(UserModel).toReturn(new Error('User does not exist'), 'findOne');
+
+      const result = await createMessage(mockMessage);
+
+      if ('error' in result) {
+        expect(result.error).toBe('User does not exist');
+      }
+    });
   });
 
   // ----------------------------------------------------------------------------
@@ -144,6 +184,17 @@ describe('Chat service', () => {
 
       expect(result.messages).toEqual(mockUpdatedChat.messages);
     });
+
+    it('should return an error if chat not found', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      const messageId = new mongoose.Types.ObjectId().toString();
+
+      // Mock findByIdAndUpdate to return null
+      mockingoose(ChatModel).toReturn(null, 'findOneAndUpdate');
+
+      const result = await addMessageToChat(chatId, messageId);
+      expect(result).toEqual({ error: 'Chat not found' });
+    });
   });
 
   // ----------------------------------------------------------------------------
@@ -171,6 +222,16 @@ describe('Chat service', () => {
       if (!('error' in result)) {
         expect(result._id).toEqual(mockChat._id.toString());
       }
+    });
+
+    it('should return an error if chat not found', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      const userId = new mongoose.Types.ObjectId().toString();
+
+      mockingoose(ChatModel).toReturn(null, 'findOneAndUpdate');
+
+      const result = await addParticipantToChat(chatId, userId);
+      expect(result).toEqual({ error: 'Chat not found' });
     });
   });
 

@@ -13,19 +13,17 @@ import { Message, MessageResponse } from '../types/message';
 export const saveChat = async (chatPayload: CreateChatPayload): Promise<ChatResponse> => {
   // TODO: Task 3 - Implement the saveChat function. Refer to other service files for guidance.
   try {
-    // Save messages first if provided
     let messageIds: string[] = [];
     if (chatPayload.messages && chatPayload.messages.length > 0) {
       const savedMessages = await MessageModel.insertMany(chatPayload.messages);
       messageIds = savedMessages.map(msg => msg._id.toString());
     }
-    // Create chat with participants and message IDs
+
     const chatDoc = new ChatModel({
       participants: chatPayload.participants,
       messages: messageIds,
     });
     const savedChat = await chatDoc.save();
-
     return savedChat;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Failed to save chat';

@@ -140,9 +140,10 @@ const chatController = (socket: FakeSOSocket) => {
       }
       const populatedChat = await populateDocument(chatId, 'chat');
       if (populatedChat && 'error' in populatedChat) {
-        throw new Error(populatedChat.error);
+        res.status(500).json({ error: populatedChat.error });
+        return;
       }
-      // Emit to the specific chat room
+
       socket.to(chatId).emit('chatUpdate', populatedChat);
       res.status(200).json(populatedChat);
     } catch (error) {
@@ -161,10 +162,6 @@ const chatController = (socket: FakeSOSocket) => {
     // TODO: Task 3 - Implement the getChatRoute function
     try {
       const { chatId } = req.params;
-      if (!chatId) {
-        res.status(400).json({ error: 'Chat ID is required' });
-        return;
-      }
 
       const chat = await getChat(chatId);
       if ('error' in chat) {

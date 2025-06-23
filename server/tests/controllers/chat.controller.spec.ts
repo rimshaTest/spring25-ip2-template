@@ -87,6 +87,26 @@ describe('Chat Controller', () => {
       expect(saveChatSpy).toHaveBeenCalledWith(serializedPayload);
       expect(populateDocumentSpy).toHaveBeenCalledWith(chatResponse._id?.toString(), 'chat');
     });
+
+    it('should return 500 if chat creation fails', async () => {
+      const invalidChatPayload = { participants: ['user1'] };
+
+      saveChatSpy.mockRejectedValue(new Error('Database error'));
+
+      const response = await supertest(app).post('/chat/createChat').send(invalidChatPayload);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: 'Failed to create chat' });
+    });
+
+    it('should return 400 if request body is invalid', async () => {
+      const invalidChatPayload = { participants: 'user1' };
+
+      const response = await supertest(app).post('/chat/createChat').send(invalidChatPayload);
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ error: 'Invalid request body' });
+    });
   });
 
   describe('POST /chat/:chatId/addMessage', () => {
@@ -149,6 +169,80 @@ describe('Chat Controller', () => {
       expect(addMessageSpy).toHaveBeenCalledWith(chatId.toString(), messageResponse._id.toString());
       expect(populateDocumentSpy).toHaveBeenCalledWith(chatResponse._id.toString(), 'chat');
     });
+
+    it('should return 500 if message ID is undefined', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      const messagePayload: Message = {
+        msg: 'Hello!',
+        msgFrom: 'user1',
+        msgDateTime: new Date('2025-01-01'),
+        type: 'direct',
+      };
+
+      createMessageSpy.mockResolvedValue({ ...messagePayload });
+
+      const response = await supertest(app).post(`/chat/${chatId}/addMessage`).send(messagePayload);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: 'Message ID is undefined' });
+    });
+
+    it('should return 500 if populatedChat error occurs', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      const messagePayload: Message = {
+        _id: new mongoose.Types.ObjectId(),
+        msg: 'Hello!',
+        msgFrom: 'user1',
+        msgDateTime: new Date('2025-01-01'),
+        type: 'direct',
+      };
+
+      createMessageSpy.mockResolvedValue({ ...messagePayload });
+      populateDocumentSpy.mockResolvedValue({ error: 'Failed to populate chat' });
+
+      const response = await supertest(app).post(`/chat/${chatId}/addMessage`).send(messagePayload);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: 'Failed to populate chat' });
+    });
+
+    it('should return 500 if updatedChat error occurs', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      const messagePayload: Message = {
+        msg: 'Test message',
+        msgFrom: 'user1',
+        msgDateTime: new Date('2025-01-01'),
+        type: 'direct',
+      };
+
+      const messageResponse = {
+        _id: new mongoose.Types.ObjectId(),
+        ...messagePayload,
+        user: {
+          _id: new mongoose.Types.ObjectId(),
+          username: 'user1',
+        },
+      };
+
+      createMessageSpy.mockResolvedValue(messageResponse);
+      addMessageSpy.mockResolvedValue({ error: 'Failed to update chat' });
+
+      const response = await supertest(app).post(`/chat/${chatId}/addMessage`).send(messagePayload);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: 'Failed to update chat' });
+    });
+
+    it('should return 400 if request body is invalid', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      const invalidPayload = { msg: 'Hello!' }; // Missing required fields
+
+      const response = await supertest(app).post(`/chat/${chatId}/addMessage`).send(invalidPayload);
+
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual({ error: 'Invalid request body' });
+    });
+    
   });
 
   describe('GET /chat/:chatId', () => {
@@ -208,6 +302,16 @@ describe('Chat Controller', () => {
         updatedAt: mockFoundChat.updatedAt?.toISOString(),
       });
     });
+
+    it('should return 500 if an error occurs while retrieving the chat', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      getChatSpy.mockRejectedValue(new Error('Database error'));
+
+      const response = await supertest(app).get(`/chat/${chatId}`);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: 'Failed to retrieve chat' });
+    });
   });
 
   describe('POST /chat/:chatId/addParticipant', () => {
@@ -240,7 +344,21 @@ describe('Chat Controller', () => {
         updatedAt: updatedChat.updatedAt?.toISOString(),
       });
 
-      // expect(addParticipantSpy).toHaveBeenCalledWith(chatId, participantId);
+      expect(addParticipantSpy).toHaveBeenCalledWith(chatId, participantId);
+    });
+
+    it('should return 500 if an error occurs while adding a participant', async () => {
+      const chatId = new mongoose.Types.ObjectId().toString();
+      const participantId = new mongoose.Types.ObjectId().toString();
+
+      addParticipantSpy.mockRejectedValue(new Error('Database error'));
+
+      const response = await supertest(app)
+        .post(`/chat/${chatId}/addParticipant`)
+        .send({ participantId });
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ error: 'Failed to add participant to chat' });
     });
   });
 
